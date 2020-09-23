@@ -1,0 +1,14 @@
+{
+  "name": "quickcodegeneration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "markdown-tables-to-json": "^0.1.4"
+  }
+}
