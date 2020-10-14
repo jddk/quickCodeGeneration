@@ -32,6 +32,7 @@ function input(label,code){
 
 
 let mdData = Extractor.extractObject(md);
+console.log(mdData)
 let html = ''
 
 for(let key in mdData){

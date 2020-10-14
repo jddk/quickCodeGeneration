@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<style>
+			.content {
+				width: 600px;
+				min-height: 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<el-input type="textarea" placeholder="请填入markdown格式的表格" v-model="mdTable"></el-input>
+			<el-input type="textarea" placeholder="请填入要渲染的HTML模版方法" v-model="template"></el-input>
+			<el-button @click="generate" type="primary">生成代码</el-button>
+			<div class="content">{{content}}</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+		
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						mdTable: '',
+						template: '',
+						content: ''
+					}
+				},
+				methods: {
+					generate() {
+						let table = marked(this.mdTable);
+						let tableDOM = document.createRange().createContextualFragment(table).firstChild;
+						let json = tableToJson(tableDOM);
+						let html = ''
+						
+						for(let key in json){
+							html = html + this.input(json[key].label,key)
+						}
+						this.content = html;
+
+						function tableToJson(table) {
+							let data = [];
+							let headers = [];
+							for (let i = 0; i < table.rows[0].cells.length; i++) {
+								headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
+							}
+							for (let i = 1; i < table.rows.length; i++) {
+								let tableRow = table.rows[i];
+								let rowData = {};
+								for (let j = 0; j < tableRow.cells.length; j++) {
+									rowData[headers[j]] = tableRow.cells[j].innerHTML;
+								}
+								data.push(rowData);
+							}
+							return data;
+						}
+					},
+					input(label, code) {
+						return `
+					    <el-col :span="6">
+					          <el-form-item label="${label}" prop="${code}">
+					            <el-input v-model="form.${code}"></el-input>
+					          </el-form-item>
+					        </el-col>
+					        `;
+					}
+
+				}
+			})
+		</script>
+	</body>
+</html>

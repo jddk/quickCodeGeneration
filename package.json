@@ -2,13 +2,15 @@
   "name": "quickcodegeneration",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "start": "node main"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "markdown-tables-to-json": "^0.1.4"
+    "markdown-tables-to-json": "^0.1.4",
+    "marked": "^1.2.0",
+    "vue": "^2.6.12"
   }
 }
